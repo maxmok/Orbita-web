@@ -65,6 +65,7 @@ class AttributeSearch extends Attribute
         $query->andFilterWhere(['ilike', 'attribute_name', $this->attribute_name])
             ->andFilterWhere(['ilike', 'short_name', $this->short_name]);
 
+            
         return $dataProvider;
     }
 }
