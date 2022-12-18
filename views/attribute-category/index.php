@@ -17,11 +17,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
 $actions = '{view} ';
 $isAdmn = Yii::$app->user->identity->user->isAdmin;
-// $btn_create = '';
+$btn_create = '';
 if ($isAdmn)
 {
     $actions .= '{update}';
-    // $btn = 
+    $btn_create = Html::a('Создать новую категорию', ['create'], ['class' => 'btn btn-success']); 
 }
 ?>
 <div class="attribute-category-index">
@@ -29,24 +29,25 @@ if ($isAdmn)
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?php if ($isAdmn) echo Html::a('Создать новую категорию', ['create'], ['class' => 'btn btn-success']); ?>
+        <?=  $btn_create ?>
     </p>
-
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         //'filterModel' => $searchModel,
         'columns' => [
-            //['class' => 'yii\grid\SerialColumn'],
+            // ['class' => 'yii\grid\SerialColumn'],
             'id',
             'name',            
             [
                 'header' => 'Действия',
                 'class' => ActionColumn::className(),
                 'template' => $actions,             
-            ],
-        ],
+                'urlCreator' => function ($action, AttributeCategory $model, $key, $index, $column) {
+                    return Url::toRoute([$action, 'id' => $model->id]);
+                },
+            ],            
+        ]        
     ]); ?>
 
 

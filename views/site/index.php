@@ -16,9 +16,8 @@ $this->title = 'ОРБИТА';
             echo Html::a('Вход', ['site/login'], ['class' => 'btn btn-success']);
         } else { ?>
         <p>
-            <?= Html::a('Категории', ['attribute-category/index'], ['class' => 'btn btn-success']) ?>
-            <!-- <?= Html::a('Подразделения', ['dep/index'], ['class' => 'btn btn-success']) ?>
-            <?= Html::a('Пользователи', ['user/index'], ['class' => 'btn btn-success']) ?> -->
+            <?= Html::a('ПОИСК', ['search/index'], ['class' => 'btn btn-success']) ?>
+            <?= Html::a('Атрибуты и Категории', ['attribute-category/index'], ['class' => 'btn btn-info']) ?>
         </p>
         <?php } ?>
 

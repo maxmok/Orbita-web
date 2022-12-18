@@ -46,17 +46,9 @@ class Attribute extends \yii\db\ActiveRecord
             'id' => 'ID',
             'attribute_name' => 'Название',
             'short_name' => 'Короткое название',
-            'id_category' => 'Id Category',
-            'count_values' => 'Коичество значений',
+            'id_category' => 'Категория',
+            'count_values' => 'Количество значений',
         ];
     }
-
-    /**
-     * {@inheritdoc}
-     * @return AttributeQuery the active query used by this AR class.
-     */
-    public static function find()
-    {
-        return new AttributeQuery(get_called_class());
-    }
+    
 }

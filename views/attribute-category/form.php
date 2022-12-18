@@ -21,9 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php $form = ActiveForm::begin(); ?>
 
         <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-
-        <!-- <?= $form->field($model, 'id_parent_category')->textInput() ?> -->
-
+       
         <div class="form-group">
             <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
         </div>

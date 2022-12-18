@@ -47,23 +47,5 @@ class AttributeCategory extends \yii\db\ActiveRecord
             'id_parent_category' => 'Id Parent Category',
         ];
     }
-
-    /**
-     * Gets query for [[Attributes0]].
-     *
-     * @return \yii\db\ActiveQuery|AttributeQuery
-     */
-    public function getAttributes0()
-    {
-        return $this->hasMany(Attribute::class, ['id_category' => 'id']);
-    }
-
-    /**
-     * {@inheritdoc}
-     * @return AttributeCategoryQuery the active query used by this AR class.
-     */
-    public static function find()
-    {
-        return new AttributeCategoryQuery(get_called_class());
-    }
+    
 }

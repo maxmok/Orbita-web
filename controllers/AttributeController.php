@@ -77,7 +77,7 @@ class AttributeController extends Controller
             $model->loadDefaultValues();
         }
 
-        return $this->render('create', [
+        return $this->render('form', [
             'model' => $model,
         ]);
     }
@@ -97,7 +97,7 @@ class AttributeController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
-        return $this->render('update', [
+        return $this->render('form', [
             'model' => $model,
         ]);
     }

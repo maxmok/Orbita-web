@@ -40,7 +40,7 @@ class AttributeCategorySearch extends AttributeCategory
      */
     public function search($params)
     {
-        $query = AttributeCategory::find();
+        $query = AttributeCategory::find();        
         $query->orderBy('id');
 
         // add conditions that should always apply here

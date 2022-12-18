@@ -3,11 +3,11 @@
 namespace app\models;
 
 /**
- * This is the ActiveQuery class for [[AttributeCategory]].
+ * This is the ActiveQuery class for [[Value]].
  *
- * @see AttributeCategory
+ * @see Value
  */
-class AttributeCategoryQuery extends \yii\db\ActiveQuery
+class ValueQuery extends \yii\db\ActiveQuery
 {
     /*public function active()
     {
@@ -16,7 +16,7 @@ class AttributeCategoryQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return AttributeCategory[]|array
+     * @return Value[]|array
      */
     public function all($db = null)
     {
@@ -25,7 +25,7 @@ class AttributeCategoryQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return AttributeCategory|array|null
+     * @return Value|array|null
      */
     public function one($db = null)
     {

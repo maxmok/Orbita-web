@@ -9,6 +9,7 @@ use app\models\Attribute;
 /**
  * AttributeSearch represents the model behind the search form of `app\models\Attribute`.
  */
+
 class AttributeSearch extends Attribute
 {
     /**
@@ -45,11 +46,11 @@ class AttributeSearch extends Attribute
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            
         ]);
 
         $this->load($params);
         if (!$this->validate()) {
-
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
             return $dataProvider;

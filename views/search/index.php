@@ -1,30 +1,54 @@
 <?php
+
 use yii\helpers\Html;
 use yii\bootstrap5\ActiveForm;
+use yii\grid\GridView;
+
+use app\models\User;
 
 /** @var array $result */
+/** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->params['breadcrumbs'][] = ['label' => 'Категории атрибутов', 'url' => ['index']];
+$this->title = "ПОИСК";
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="attribute-category-create">
+<div class="search">
 
     <h1><?= Html::encode($this->title) ?></h1>    
 
-    <div class="attribute-category-form">
-        <?php ActiveForm::begin(['method' => 'GET']); ?>
+    <div class="search-form">
+        <?php $form = ActiveForm::begin(['method' => 'POST']); ?>
 
-        <?= Html::input('hidden', 'search', 'search') ?>
-
-        <?= Html::input('checkbox', 'fio_like') ?> 
-        <?= Html::input('text', 'fio') ?>
+        <?= $form->field($searchModel, 'is_like')->checkbox() ?>
+        <?= $form->field($searchModel, 'value')->textInput() ?>
+        
         <div class="form-group">
-            <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
+            <?= Html::submitButton('Найти', ['class' => 'btn btn-success']) ?>
         </div>
 
         <?php ActiveForm::end(); ?>
+        
+        <?=
+        GridView::widget([
+            'dataProvider' => $dataProvider,
+            //'filterModel' => $searchModel,
+            'columns' => [
+                // ['class' => 'yii\grid\SerialColumn'],
+                'id_person',
+//                'name',
+//                [
+//                    'header' => 'Действия',
+//                    'class' => ActionColumn::className(),
+//                    'template' => $actions,
+//                    'urlCreator' => function ($action, AttributeCategory $model, $key, $index, $column) {
+//                        return Url::toRoute([$action, 'id' => $model->id]);
+//                    },
+//                ],
+            ]
+        ]);
+        ?>
 
-        <?php var_dump($result); ?>
+        <?php //var_dump($result); ?>
 
     </div>
 

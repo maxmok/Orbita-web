@@ -2,7 +2,7 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'pgsql:host=localhost;dbname=orbita_web',
+    'dsn' => 'pgsql:host=localhost;dbname=Orbita_web',
     'username' => 'postgres',
     'password' => '123456',
     'charset' => 'utf8',

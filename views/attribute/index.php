@@ -10,35 +10,44 @@ use yii\grid\GridView;
 /** @var app\models\AttributeSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Attributes';
+$this->title = 'Атрибуты';
 $this->params['breadcrumbs'][] = $this->title;
+
+$actions = '{view} ';
+$isAdmn = Yii::$app->user->identity->user->isAdmin;
+$btn_create = '';
+if ($isAdmn)
+{
+    $actions .= '{update}';
+    $btn_create = Html::a('Создать новый атрибут', ['attribute/create'], ['class' => 'btn btn-success']); 
+}
+
 ?>
 <div class="attribute-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Attribute', ['create'], ['class' => 'btn btn-success']) ?>
+        <?=  $btn_create ?>
     </p>
-
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
+    
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
+            //['class' => 'yii\grid\SerialColumn'],
             'id',
             'attribute_name',
             'short_name',
-            'id_category',
+            //'id_category',
             'count_values',
             [
+                'header' => 'Действия',
                 'class' => ActionColumn::className(),
+                'template' => $actions,      
                 'urlCreator' => function ($action, Attribute $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                    return Url::toRoute(['attribute/'.$action, 'id' => $model->id]);
+                 }       
             ],
         ],
     ]); ?>

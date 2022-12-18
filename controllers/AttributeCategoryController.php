@@ -95,6 +95,16 @@ class AttributeCategoryController extends Controller
         ]);
     }
 
+    private function renderRightIndex(AttributeCategory $model) {
+        $searchModel = new AttributeSearch();
+        $searchModel->id_category = $model->id;
+        $dataProvider = $searchModel->search($this->request->queryParams);
+        return $this->renderPartial('/attribute/index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,                        
+        ]);
+    }
+
     /**
      * Creates a new AttributeCategory model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -165,18 +175,5 @@ class AttributeCategoryController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
-    }
-
-    private function renderRightIndex(AttributeCategory $model) {
-        $searchModel = new AttributeSearch();
-        $searchModel->id_category = $model->id;
-        $dataProvider = $searchModel->search($this->request->queryParams);
-        return $this->renderPartial('/attribute/index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            /*'types' => UserRight::getTypeList(),
-            'courses' => Course::getList(),*/
-            
-        ]);
-    }
+    }    
 }

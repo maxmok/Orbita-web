@@ -3,11 +3,11 @@
 namespace app\models;
 
 /**
- * This is the ActiveQuery class for [[Attribute]].
+ * This is the ActiveQuery class for [[Portion]].
  *
- * @see Attribute
+ * @see Portion
  */
-class AttributeQuery extends \yii\db\ActiveQuery
+class PortionQuery extends \yii\db\ActiveQuery
 {
     /*public function active()
     {
@@ -16,7 +16,7 @@ class AttributeQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return Attribute[]|array
+     * @return Portion[]|array
      */
     public function all($db = null)
     {
@@ -25,7 +25,7 @@ class AttributeQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return Attribute|array|null
+     * @return Portion|array|null
      */
     public function one($db = null)
     {
