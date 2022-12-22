@@ -99,4 +99,5 @@ class Portion extends \yii\db\ActiveRecord
     {
         return new PortionQuery(get_called_class());
     }
+         
 }

@@ -48,4 +48,15 @@ class AttributeCategory extends \yii\db\ActiveRecord
         ];
     }
     
+    public static function getList(): array {
+        $models = self::find()                
+                ->orderBy('name')
+                ->all();
+        $list = [];
+        foreach($models as $model) {
+            $list[$model->id] = $model->name;
+        }
+        return $list;
+    }
+    
 }

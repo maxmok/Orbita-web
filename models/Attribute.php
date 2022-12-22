@@ -51,4 +51,18 @@ class Attribute extends \yii\db\ActiveRecord
         ];
     }
     
+    public static function getList($id_category = 0): array {
+        $models = self::find()                
+                ->orderBy('name');
+        if ($id_category != 0) {
+            $models->where(['id_category' => $id_category]); 
+        }         
+        $models->all();
+        $list = [];
+        foreach($models as $model) {
+            $list[$model->id] = $model->attribute_name;
+        }
+        return $list;
+    }
+    
 }

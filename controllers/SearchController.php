@@ -9,6 +9,7 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 
 use app\models\User;
+use app\models\Person;
 use app\models\SearchModel;
 /**
  * SearchController implements the CRUD actions for Attribute model.
@@ -63,6 +64,9 @@ class SearchController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'bDays' => Person::getDays(),
+            'bMonths' => Person::getMonths(),
+            'bYears' => Person::getYears(),
         ]);
         
 //        return $this->render('index', [
