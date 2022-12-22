@@ -66,7 +66,7 @@ class Person extends \yii\db\ActiveRecord
     
     public static function getDays():array {        
         $list = [];
-        $list[0] = '';
+        $list[-1] = '';
         for ($i=1; $i<=31; $i++){
             $list[$i] = $i;        
         }                    
@@ -80,7 +80,7 @@ class Person extends \yii\db\ActiveRecord
                 ->distinct()
                 ->column();
         $list = [];
-        $list[0] = '';
+        $list[-1] = '';
         foreach($months as $index => $month) {
             $list[$index+1] = $month;
         }
@@ -107,23 +107,27 @@ class Person extends \yii\db\ActiveRecord
                 ->distinct()
                 ->column();
         $list = [];
-        $list[0] = '';
+        $list[-1] = '';
         foreach($years as $year) {
             $list[$year] = $year;
         }
+        return $list;        
+    }
+    
+    public static function getAges(): array {
+        $ages = self::find()
+                ->select(['age' => "date_part('year', age(birth_date))"])
+                ->where('birth_date < now()')                
+                ->orderBy('age')
+                ->distinct()
+                ->column();
+        $list = [];
+        $list[-1] = '';
+        foreach($ages as $age) {
+            if ($age != 0) {
+                $list[$age] = $age;
+            }                
+        }
         return $list;
-        
-//        $list[1] = 'Январь';
-//        $list[2] = 'Февраль';
-//        $list[3] = 'Март';
-//        $list[4] = 'Апрель';
-//        $list[5] = 'Май';
-//        $list[6] = 'Июнь';
-//        $list[7] = 'Июль';
-//        $list[8] = 'Август';
-//        $list[9] = 'Сентябрь';
-//        $list[10] = 'Октябрь';
-//        $list[11] = 'Ноябрь';
-//        $list[12] = 'Декабрь';        
     }
 }

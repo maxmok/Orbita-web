@@ -10,6 +10,8 @@ use yii\filters\AccessControl;
 
 use app\models\User;
 use app\models\Person;
+use app\models\Organization;
+use app\models\Project;
 use app\models\SearchModel;
 /**
  * SearchController implements the CRUD actions for Attribute model.
@@ -67,6 +69,9 @@ class SearchController extends Controller
             'bDays' => Person::getDays(),
             'bMonths' => Person::getMonths(),
             'bYears' => Person::getYears(),
+            'ages' => Person::getAges(),            
+            'inns' => Organization::getInnList(),
+            'projects' => Project::getProjectList(),
         ]);
         
 //        return $this->render('index', [

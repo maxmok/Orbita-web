@@ -15,7 +15,7 @@ use Yii;
  * @property int $id_attribute
  * @property int $id_data_portion
  *
- * @property Attribute $attribute0
+ * @property Attribute $attributeObj
  * @property DataPortion $dataPortion
  */
 class Value extends \yii\db\ActiveRecord
@@ -57,6 +57,8 @@ class Value extends \yii\db\ActiveRecord
             'end_date_value' => 'Окончание атрибута',
             'id_attribute' => 'Код атрибута',
             'id_data_portion' => 'Id Data Portion',
+            
+            'attribute_name' => 'Атрибут'
         ];
     }
 
@@ -65,7 +67,7 @@ class Value extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery|AttributeQuery
      */
-    public function getAttribute0()
+    public function getAttributeObj()
     {
         return $this->hasOne(Attribute::class, ['id' => 'id_attribute']);
     }
