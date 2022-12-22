@@ -1,4 +1,3 @@
--- select * from attribute where id_category = 5
 SELECT distinct 
 	dp.id_person,
 	(select value from attribute_value where id_data_portion = dp.id and id_attribute = 6 limit 1) as fio, 
