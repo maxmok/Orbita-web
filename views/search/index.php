@@ -101,14 +101,14 @@ $actions = '{view} {update}';
                     'format' => 'raw',
                 ],
                 'fio:text:ФИО',
-                [
-                    'header' => 'Действия',
-                    'class' => ActionColumn::className(),
-                    'template' => $actions,
-                    /*'urlCreator' => function ($action, Value $model, $key, $index, $column) {
-                        return Url::toRoute([$action, 'id' => $model->id]);
-                    },*/
-                ],
+//                [
+//                    'header' => 'Действия',
+//                    'class' => ActionColumn::className(),
+//                    'template' => $actions,
+//                    /*'urlCreator' => function ($action, Value $model, $key, $index, $column) {
+//                        return Url::toRoute([$action, 'id' => $model->id]);
+//                    },*/
+//                ],
             ]
         ]);
         ?>
