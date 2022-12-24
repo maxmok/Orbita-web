@@ -2,31 +2,71 @@
 
 namespace app\controllers;
 
+use Yii;
+use app\models\User;
 use app\models\Value;
+use app\models\Attribute;
+use app\models\AttributeCategory;
 use app\models\ValueSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * ValueController implements the CRUD actions for Value model.
  */
 class ValueController extends Controller
 {
+     private function getUser() :?User {
+        return Yii::$app->user->isGuest ? null : Yii::$app->user->identity->user;
+    }
+    
     /**
      * @inheritDoc
      */
+    
     public function behaviors()
     {
+        $user = $this->getUser();
         return array_merge(
             parent::behaviors(),
             [
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
+                'access' => [
+                    'class' => AccessControl::class,                    
+                    'rules' => [
+                        [
+                            //'actions' => ['index'],
+                            'allow' => true,
+                            'matchCallback' => function() use($user) {
+                                return !Yii::$app->user->isGuest && $user->isAdmin;                                
+                            },
+                            'roles' => ['@'],
+                        ],
+                        [
+                            'actions' => ['view', 'index'],
+                            'allow' => true,
+                            'matchCallback' => function() use($user) {
+                                return !Yii::$app->user->isGuest;                                
+                            },
+                            'roles' => ['@'],
+                        ],
+                        [
+                            'roles' => ['@'],
+                            'allow' => false, 
+                            'matchCallback' => function() use($user) {
+                                return !$user->isAdmin;                                
+                            },
+                            'actions' => ['update', 'delete']
+                        ]
                     ],
                 ],
+//                'verbs' => [
+//                    'class' => VerbFilter::className(),
+//                    'actions' => [
+//                        'delete' => ['POST'],
+//                    ],
+//                ],
             ]
         );
     }
@@ -39,14 +79,43 @@ class ValueController extends Controller
     public function actionIndex()
     {
         $searchModel = new ValueSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        $attributeCategoryModels = AttributeCategory::find()
+                ->andWhere('id > 1')
+                ->orderBy('id')               
+                ->all();
 
+        /** @var AttributeCategory $attributeCategoryModel */
+        
+        foreach($attributeCategoryModels as $key => &$attributeCategoryModel) {
+            $query = $this->request->queryParams;
+            $query['ValueSearch']['idCategory'] = $attributeCategoryModel->id;
+        
+            $dataProvider = $searchModel->search($query);
+            
+            if ($dataProvider->count > 0) {
+                $attributeCategoryModel = [
+                    'label' => $attributeCategoryModel->name,
+                    'content' => $this->renderPartial('tab/view', [
+                        'searchModel' => $searchModel,
+                        'dataProvider' => $dataProvider,
+                        //'attributes' => Attribute::getList($attributeCategoryModel->id),
+                    ]),
+                ];
+            } else {
+                unset($attributeCategoryModels[$key]);
+            }
+            
+        }
+        
         return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,            
+            'category' => $attributeCategoryModels,
+            'fio' => $query['ValueSearch']['fio'],
+            //'attributes' => Attribute::getList(0),
+//            'searchModel' => $searchModel,
+//            'dataProvider' => $dataProvider,            
         ]);
     }
-
+   
     /**
      * Displays a single Value model.
      * @param int $id ID
@@ -77,8 +146,9 @@ class ValueController extends Controller
             $model->loadDefaultValues();
         }
 
-        return $this->render('create', [
+        return $this->render('form', [
             'model' => $model,
+            'attributes' => Attribute::getList(0),
         ]);
     }
 
@@ -97,8 +167,9 @@ class ValueController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
-        return $this->render('update', [
+        return $this->render('form', [
             'model' => $model,
+            'attributes' => Attribute::getList(0),
         ]);
     }
 

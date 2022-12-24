@@ -7,21 +7,17 @@
 
 use yii\helpers\Html;
 
-$this->title = $name;
+$src = Yii::getAlias('@root').'\assets\images\404.jpg';
+
 ?>
-<div class="site-error">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <div class="alert alert-danger">
+<div class="alert alert-danger">
         <?= nl2br(Html::encode($message)) ?>
-    </div>
-
-    <p>
-        The above error occurred while the Web server was processing your request.
-    </p>
-    <p>
-        Please contact us if you think this is a server error. Thank you.
-    </p>
+</div><!-- comment -->
+<div class="site-error">
+    
+    <?= Html::img($src);  ?>
 
 </div>
+
+

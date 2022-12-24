@@ -1,32 +1,70 @@
 <?php
 
 namespace app\controllers;
-
+use Yii;
 use app\models\Attribute;
+use app\models\AttributeCategory;
 use app\models\AttributeSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
+
+use app\models\User;
 
 /**
  * AttributeController implements the CRUD actions for Attribute model.
  */
 class AttributeController extends Controller
 {
+     private function getUser() :?User {
+        return Yii::$app->user->isGuest ? null : Yii::$app->user->identity->user;
+    }
+
     /**
      * @inheritDoc
      */
     public function behaviors()
     {
+        $user = $this->getUser();    
         return array_merge(
             parent::behaviors(),
             [
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
+                'access' => [
+                    'class' => AccessControl::class,                    
+                    'rules' => [
+                        [
+                            //'actions' => ['index'],
+                            'allow' => true,
+                            'matchCallback' => function() use($user) {
+                                return !Yii::$app->user->isGuest && $user->isAdmin;                                
+                            },
+                            'roles' => ['@'],
+                        ],
+                        [
+                            'actions' => ['view'],
+                            'allow' => true,
+                            'matchCallback' => function() use($user) {
+                                return !Yii::$app->user->isGuest;                                
+                            },
+                            'roles' => ['@'],
+                        ],
+                        [
+                            'roles' => ['@'],
+                            'allow' => false, 
+                            'matchCallback' => function() use($user) {
+                                return !$user->isAdmin;                                
+                            },
+                            'actions' => ['update', 'delete']
+                        ]
                     ],
                 ],
+//                'verbs' => [
+//                    'class' => VerbFilter::className(),
+//                    'actions' => [
+//                        'delete' => ['POST'],
+//                    ],
+//                ],
             ]
         );
     }
@@ -44,6 +82,7 @@ class AttributeController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'categories' => AttributeCategory::getList(),
         ]);
     }
 
@@ -57,6 +96,7 @@ class AttributeController extends Controller
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'categories' => AttributeCategory::getList(),
         ]);
     }
 
@@ -79,6 +119,7 @@ class AttributeController extends Controller
 
         return $this->render('form', [
             'model' => $model,
+            'categories' => AttributeCategory::getList(),
         ]);
     }
 
@@ -99,6 +140,7 @@ class AttributeController extends Controller
 
         return $this->render('form', [
             'model' => $model,
+            'categories' => AttributeCategory::getList(),
         ]);
     }
 

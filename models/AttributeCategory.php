@@ -30,7 +30,7 @@ class AttributeCategory extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'required'],
-            [['id_parent_category'], 'default', 'value' => null],
+            [['id_parent_category'], 'default', 'value' => 0],
             [['id_parent_category'], 'integer'],
             [['name'], 'string', 'max' => 250],
         ];
@@ -43,7 +43,7 @@ class AttributeCategory extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Название',
+            'name' => 'Название категории',
             'id_parent_category' => 'Id Parent Category',
         ];
     }

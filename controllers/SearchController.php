@@ -61,7 +61,7 @@ class SearchController extends Controller
     public function actionIndex()
     {
         $searchModel = new SearchModel();
-        $dataProvider = $searchModel->search($this->request->post());
+        $dataProvider = $searchModel->search($this->request->get());
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -72,11 +72,7 @@ class SearchController extends Controller
             'ages' => Person::getAges(),            
             'inns' => Organization::getInnList(),
             'projects' => Project::getProjectList(),
-        ]);
-        
-//        return $this->render('index', [
-//            'result' => $result,
-//        ]);
+        ]);       
     }
 
 }

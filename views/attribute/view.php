@@ -42,7 +42,7 @@ if ($isAdmn)
             'id',
             'attribute_name',
             'short_name',
-            'id_category',
+            'attributeCategory.name',
             'count_values',
         ],
     ]) ?>

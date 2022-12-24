@@ -14,13 +14,12 @@ use yii\grid\GridView;
 $this->title = 'Категории атрибутов';
 $this->params['breadcrumbs'][] = $this->title;
 
-
 $actions = '{view} ';
-$isAdmn = Yii::$app->user->identity->user->isAdmin;
+$isAdmin = Yii::$app->user->identity->user->isAdmin;
 $btn_create = '';
-if ($isAdmn)
+if ($isAdmin)
 {
-    $actions .= '{update}';
+    $actions .= '{update} {delete}';
     $btn_create = Html::a('Создать новую категорию', ['create'], ['class' => 'btn btn-success']); 
 }
 ?>
@@ -43,9 +42,9 @@ if ($isAdmn)
                 'header' => 'Действия',
                 'class' => ActionColumn::className(),
                 'template' => $actions,             
-                'urlCreator' => function ($action, AttributeCategory $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                },
+//                'urlCreator' => function ($action, AttributeCategory $model, $key, $index, $column) {
+//                    return Url::toRoute([$action, 'id' => $model->id]);
+//                },
             ],            
         ]        
     ]); ?>

@@ -30,7 +30,7 @@ class SearchModel extends Model
     public function rules()
     {
         return [
-            [['id', 'id_person', 'tel'], 'integer'],
+            [['id', 'id_person', 'tel', 'min_age', 'max_age', 'b_day', 'b_month', 'b_year'], 'integer'],
             ['first_name', 'filter', 'filter' => function($val) {return $val ? mb_strtolower($val): null;}],
             [['first_name', 'second_name', 'father_name', 'is_like', 'inn', 'tabn', 'project', 'email'], 'safe'],                              
         ];
@@ -45,7 +45,7 @@ class SearchModel extends Model
             'b_month' => 'Месяц рождения',
             'b_year' => 'Год рождения',
             'min_age' => 'Возраст от:',
-            'max_age' => 'Возраст до:',
+            'max_age' => 'до:',
             'inn' => 'ИНН организации работника',
             'tabn' => 'Таб. №',
             'project' => 'В проекте',
@@ -74,19 +74,25 @@ class SearchModel extends Model
     public function search(array $params): ActiveDataProvider
     {
         // (select value from attribute_value where id_data_portion = dp.id and id_attribute = 6 limit 1) as fio
-        $subQueryFio = (new Query())->select('value')->from('attribute_value')->where('id_data_portion = p.id and id_attribute = 6')->limit(1);        
+        $subQueryFio = (new Query())->select('value')->from('attribute_value')->where('id_data_portion = p.id and id_attribute = 6 and value is not null')->limit(1);        
+        $subQueryBirthDay = (new Query())->select('value')->from('attribute_value')->where('id_data_portion = p.id and id_attribute = 12 and value is not null')->limit(1);        
+        $subQueryInn = (new Query())->select('value')->from('attribute_value')->where('id_data_portion = p.id and id_attribute = 1 and value is not null')->limit(1);        
+        $subQueryTabn = (new Query())->select('value')->from('attribute_value')->where('id_data_portion = p.id and id_attribute = 7 and value is not null')->limit(1);        
+        $subQueryDolzhnost = (new Query())->select('value')->from('attribute_value')->where('id_data_portion = p.id and id_attribute = 40 and value is not null')->limit(1);        
         
         $query = Value::find()
                 ->alias('av')
                 ->innerJoinWith('dataPortion p', false)
                 ->distinct()
                 ->select('p.id_person as id')
-                ->addSelect(['fio' => $subQueryFio]);        
+                ->addSelect(['fio' => $subQueryFio])  
+                ->addSelect(['birthday' => $subQueryBirthDay])
+                ->addSelect(['inn' => $subQueryInn])        
+                ->addSelect(['tabn' => $subQueryTabn])        
+                ->addSelect(['dolzhnost' => $subQueryDolzhnost]);        
         
         $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-           // 'key' => 'id_person'
-//            'sort' => $this->createSort(),
+            'query' => $query,            
         ]);
         
         $this->load($params);
@@ -107,17 +113,8 @@ class SearchModel extends Model
             $query->where(['p.id_person' => $ids])
                   ->andWhere(['av.id_attribute' => 6]);
         }        
-        
-        /*$rows = $query->asArray()->all();
-        $models = []; 
-        foreach($rows as $row) {
-            $models[] = new SearchModel($row);
-        }
-        $dataProvider = new \yii\data\ArrayDataProvider([
-            'allModels' => $models
-        ]);*/
-        $query->asArray();
-        //$query->all();
+                
+        $query->asArray();        
         
         return $dataProvider;
     }  
@@ -149,7 +146,8 @@ class SearchModel extends Model
             $query->andFilterWhere(['id' => $idsPrev]);
         }            
         $field = explode('_', $name)[1];        
-        return $query->andFilterWhere(["extract($field from birth_date)", $value])->column();        
+        $query->andFilterWhere(["extract($field from birth_date)" => $value]);        
+        return $query->column();        
     }
     
     private function getIdsByAge($idsPrev): array {

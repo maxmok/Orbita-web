@@ -9,16 +9,17 @@ use yii\grid\GridView;
 /** @var yii\web\View $this */
 /** @var app\models\AttributeSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
+/** @var array $categoties */
 
 $this->title = 'Атрибуты';
 $this->params['breadcrumbs'][] = $this->title;
 
 $actions = '{view} ';
-$isAdmn = Yii::$app->user->identity->user->isAdmin;
+$isAdmin = Yii::$app->user->identity->user->isAdmin;
 $btn_create = '';
-if ($isAdmn)
+if ($isAdmin)
 {
-    $actions .= '{update}';
+    $actions .= '{update} {delete}';
     $btn_create = Html::a('Создать новый атрибут', ['attribute/create'], ['class' => 'btn btn-success']); 
 }
 
@@ -39,7 +40,11 @@ if ($isAdmn)
             'id',
             'attribute_name',
             'short_name',
-            //'id_category',
+            [
+                'attribute' => 'id_category',
+                'value' => 'attributeCategory.name',
+                'filter' => $categories,
+            ],            
             'count_values',
             [
                 'header' => 'Действия',

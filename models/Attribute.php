@@ -32,7 +32,7 @@ class Attribute extends \yii\db\ActiveRecord
             [['attribute_name'], 'required'],
             [['id_category'], 'default', 'value' => 1],
             [['count_values'], 'default', 'value' => 0],
-            [['id_category', 'count_values'], 'integer'],
+            [['id','id_category', 'count_values'], 'integer'],
             [['attribute_name', 'short_name'], 'string', 'max' => 250],
         ];
     }
@@ -44,7 +44,7 @@ class Attribute extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'attribute_name' => 'Название',
+            'attribute_name' => 'Название атрибута',
             'short_name' => 'Короткое название',
             'id_category' => 'Категория',
             'count_values' => 'Количество значений',
@@ -53,16 +53,28 @@ class Attribute extends \yii\db\ActiveRecord
     
     public static function getList($id_category = 0): array {
         $models = self::find()                
-                ->orderBy('name');
+                ->orderBy('id_category, id, attribute_name');
         if ($id_category != 0) {
             $models->where(['id_category' => $id_category]); 
         }         
-        $models->all();
-        $list = [];
-        foreach($models as $model) {
-            $list[$model->id] = $model->attribute_name;
+        $models->asArray();
+        $attrbutes = $models->all();
+        //var_dump($res); exit;
+        $list = [];        
+        foreach($attrbutes as $attrbute) {
+        $list[$attrbute['id']] = $attrbute['attribute_name'];
         }
         return $list;
+    }
+    
+    /**
+     * Gets query for [[Attribute0]].
+     *
+     * @return \yii\db\ActiveQuery|AttributeQuery
+     */
+    public function getAttributeCategory(): \yii\db\ActiveQuery|AttributeQuery
+    {
+        return $this->hasOne(AttributeCategory::class, ['id' => 'id_category']);
     }
     
 }

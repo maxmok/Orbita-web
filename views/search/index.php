@@ -21,16 +21,15 @@ use app\models\Value;
 
 $this->title = "ПОИСК";
 $this->params['breadcrumbs'][] = $this->title;
-$actions = '{view} {update}';    
 ?>
 <div class="search">
 
     <h1><?= Html::encode($this->title) ?></h1>    
 
     <div class="search-form">
-        <?php $form = ActiveForm::begin(['method' => 'POST']); ?>   
+        <?php $form = ActiveForm::begin(['method' => 'GET']); ?>   
         
-                <?= $form->field($searchModel, 'is_like')->checkbox() ?>
+                <?= $form->field($searchModel, 'is_like')->checkbox() ?>            
         
         <div class="row">
             <div class="col-md-4"> 
@@ -53,10 +52,10 @@ $actions = '{view} {update}';
             <div class="col-md-2"> 
                 <?= $form->field($searchModel, 'b_year')->dropDownList($bYears) ?>     
             </div>        
-            <div class="col-md-1"> 
+            <div class="col-md-2"> 
                 <?= $form->field($searchModel, 'min_age')->dropDownList($ages) ?>
             </div>                            
-            <div class="col-md-1"> 
+            <div class="col-md-2"> 
                 <?= $form->field($searchModel, 'max_age')->dropDownList($ages) ?>
             </div>
         </div>
@@ -80,6 +79,7 @@ $actions = '{view} {update}';
         </div>
         <div >          
                 <?= Html::submitButton('Найти', ['class' => 'btn btn-success btn-lg']) ?>
+                <?= Html::resetButton('Сбросить фильтры', ['class' => 'btn btn-secondary btn-lg']) ?>
         </div>
         
         <?php ActiveForm::end(); ?>
@@ -89,27 +89,24 @@ $actions = '{view} {update}';
         <?=
         GridView::widget([
             'dataProvider' => $dataProvider,
-            //'filterModel' => $searchModel,
+           // 'filterModel' => $searchModel,
             'columns' => [
-                // ['class' => 'yii\grid\SerialColumn'],
-//                'id:text:ИД',
+                ['class' => 'yii\grid\SerialColumn'],
+                //'attribute' => 'id',
                 [
-                    'attribute' => 'id',
+                    'attribute' => 'ФИО',
                     'value' => function($array) {
-                        return Html::a($array['id'], ['value/index', 'ValueSearch[idPerson]' => $array['id']], ['data-pjax' => 0]);
+                        return Html::a($array['fio'], ['value/index', 'ValueSearch[idPerson]' => $array['id'], 'ValueSearch[fio]' => $array['fio']], ['data-pjax' => 0]);
                     },
                     'format' => 'raw',
                 ],
-                'fio:text:ФИО',
-//                [
-//                    'header' => 'Действия',
-//                    'class' => ActionColumn::className(),
-//                    'template' => $actions,
-//                    /*'urlCreator' => function ($action, Value $model, $key, $index, $column) {
-//                        return Url::toRoute([$action, 'id' => $model->id]);
-//                    },*/
-//                ],
-            ]
+                            
+                //'fio:text:ФИО',
+                'birthday:date:Дата рождения',
+                'inn:text:ИНН организации',
+                'tabn:text:Таб.№',
+                'dolzhnost:text:Должность',
+            ],            
         ]);
         ?>
 

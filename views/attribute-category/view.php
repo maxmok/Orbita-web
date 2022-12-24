@@ -8,9 +8,10 @@ use yii\widgets\DetailView;
 /** @var string $rightIndex */
 
 $this->title = $model->name;
+$this->params['breadcrumbs'] = [];
 $this->params['breadcrumbs'][] = ['label' => 'Категория атрибутов', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-\yii\web\YiiAsset::register($this);
+//\yii\web\YiiAsset::register($this);
 
 $actions = '{view} ';
 $isAdmn = Yii::$app->user->identity->user->isAdmin;

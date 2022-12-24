@@ -40,6 +40,14 @@ class AttributeCategoryController extends Controller
                             //'actions' => ['index'],
                             'allow' => true,
                             'matchCallback' => function() use($user) {
+                                return !Yii::$app->user->isGuest && $user->isAdmin;                                
+                            },
+                            'roles' => ['@'],
+                        ],
+                        [
+                            'actions' => ['view'],
+                            'allow' => true,
+                            'matchCallback' => function() use($user) {
                                 return !Yii::$app->user->isGuest;                                
                             },
                             'roles' => ['@'],
@@ -50,7 +58,7 @@ class AttributeCategoryController extends Controller
                             'matchCallback' => function() use($user) {
                                 return !$user->isAdmin;                                
                             },
-                            'actions' => ['update']
+                            'actions' => ['update', 'delete']
                         ]
                     ],
                 ],
@@ -101,7 +109,8 @@ class AttributeCategoryController extends Controller
         $dataProvider = $searchModel->search($this->request->queryParams);
         return $this->renderPartial('/attribute/index', [
             'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,                        
+            'dataProvider' => $dataProvider,   
+            'categories' => AttributeCategory::getList(),
         ]);
     }
 

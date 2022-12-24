@@ -76,4 +76,6 @@ if (YII_ENV_DEV) {
     ];
 }
 
+Yii::setAlias('@root', dirname(__DIR__));
+
 return $config;

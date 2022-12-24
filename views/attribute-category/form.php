@@ -11,6 +11,15 @@ use yii\bootstrap5\ActiveForm;
 $this->title = $model->isNewRecord ? 'Создать категорию' : 'Изменить категорию';
 $this->params['breadcrumbs'][] = ['label' => 'Категории атрибутов', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
+$isAdmin = Yii::$app->user->identity->user->isAdmin;
+
+if (!$isAdmin) {
+?>    
+    <?= Html::img('../../assets/images/forbidden.jpg') ?>
+    <p>Вы не должны были попасть на эту страницу.<br> У вас нет прав на Создание и Изменение категорий.</p>
+<?php    
+} else {
 ?>
 <div class="attribute-category-create">
 
@@ -29,4 +38,5 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php ActiveForm::end(); ?>
 
     </div>
+<?php } ?>
 

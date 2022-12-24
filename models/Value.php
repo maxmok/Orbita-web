@@ -36,7 +36,7 @@ class Value extends \yii\db\ActiveRecord
         return [
             [['person_link_value', 'id_attribute', 'id_data_portion'], 'default', 'value' => null],
             [['person_link_value', 'id_attribute', 'id_data_portion'], 'integer'],
-            [['start_date_value', 'end_date_value'], 'safe'],
+            [['start_date_value', 'end_date_value'], 'date'],
             [['id_attribute', 'id_data_portion'], 'required'],
             [['value'], 'string', 'max' => 1000],
             [['id_attribute'], 'exist', 'skipOnError' => true, 'targetClass' => Attribute::class, 'targetAttribute' => ['id_attribute' => 'id']],
@@ -55,8 +55,8 @@ class Value extends \yii\db\ActiveRecord
             'person_link_value' => 'Ссылка на другой объект',
             'start_date_value' => 'Начало атрибута',
             'end_date_value' => 'Окончание атрибута',
-            'id_attribute' => 'Код атрибута',
-            'id_data_portion' => 'Id Data Portion',
+            'id_attribute' => 'Атрибут',
+            'id_data_portion' => '',
             
             'attribute_name' => 'Атрибут'
         ];
