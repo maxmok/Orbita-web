@@ -2,8 +2,11 @@
 use yii\grid\GridView;
 use yii\grid\ActionColumn;
 use yii\helpers\Html;
+use app\models\ValueSearch;
+
 /** @var AttributeCategory $category */ 
 /** @var DataProvider $dataProvider */ 
+/** @var SearchModel $searchModel */ 
 
 
 $isAdmin = Yii::$app->user->identity->user->isAdmin;
@@ -11,7 +14,8 @@ $isAdmin = Yii::$app->user->identity->user->isAdmin;
 $btn_actions = $isAdmin ? [
                 'header' => 'Действия',
                 'class' => ActionColumn::className(),
-                'template' => '{update} {delete}',
+                'template' => '{update} {delete}',     
+               
             ] : [];    
 
 $widgetColumns = [
@@ -20,7 +24,7 @@ $widgetColumns = [
             [
                     'attribute' => 'Зачение',
                     'value' => function($array) {                        
-                        return $array['person_link_value'] > 0 ? Html::a($array['value'], ['value/index', 'ValueSearch[idPerson]' => $array['person_link_value'], 'ValueSearch[fio]' => $array['value']], ['data-pjax' => 0]) : $array['value'];
+                        return $array['person_link_value'] > 0 ? Html::a($array['value'], ['value/index', 'ValueSearch[idPerson]' => $array['person_link_value']], ['data-pjax' => 0]) : $array['value'];
                     },
                     'format' => 'raw',
                 ],            

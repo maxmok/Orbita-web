@@ -46,7 +46,7 @@ class ValueSearch extends Value
         $query = Value::find()
                 ->alias('v')
                 ->select('v.*')                
-                ->orderBy("case when start_date_value is null and id_attribute in (select id from attribute where attribute_name ~~* '%дата%') then value::date else start_date_value end")
+                ->orderBy("case when start_date_value is null and id_attribute in (select id from attribute where attribute_name ~~* '%дата%' and id <>31 and id <> 32) then value::date else start_date_value end")
                 ->addOrderBy('v.id_attribute');
         
 
@@ -55,6 +55,7 @@ class ValueSearch extends Value
         $dataProvider = new ActiveDataProvider([
             'query' => $query,     
             'sort' => false,
+            
         ]);
 
         $this->load($params);

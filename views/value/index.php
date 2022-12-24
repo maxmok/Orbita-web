@@ -12,9 +12,8 @@ use yii\bootstrap5\Tabs;
 /** @var yii\web\View $this */
 /** @var app\models\ValueSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
-/** @var string fio */
 
-$this->title = 'Данные объекта: '.$fio;
+$this->title = 'Данные объекта';
 $this->params['breadcrumbs'][] = $this->title;
 
 $isAdmn = Yii::$app->user->identity->user->isAdmin;

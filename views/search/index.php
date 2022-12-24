@@ -96,7 +96,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'attribute' => 'ФИО',
                     'value' => function($array) {
-                        return Html::a($array['fio'], ['value/index', 'ValueSearch[idPerson]' => $array['id'], 'ValueSearch[fio]' => $array['fio']], ['data-pjax' => 0]);
+                        return Html::a($array['fio'], ['value/index', 'ValueSearch[idPerson]' => $array['id']], ['data-pjax' => 0]);
                     },
                     'format' => 'raw',
                 ],

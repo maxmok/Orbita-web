@@ -98,6 +98,7 @@ class ValueController extends Controller
                     'content' => $this->renderPartial('tab/view', [
                         'searchModel' => $searchModel,
                         'dataProvider' => $dataProvider,
+                        //'fio' => $query['ValueSearch']['fio'],
                         //'attributes' => Attribute::getList($attributeCategoryModel->id),
                     ]),
                 ];
@@ -109,7 +110,7 @@ class ValueController extends Controller
         
         return $this->render('index', [
             'category' => $attributeCategoryModels,
-            'fio' => $query['ValueSearch']['fio'],
+            //'fio' => $query['ValueSearch']['fio'],
             //'attributes' => Attribute::getList(0),
 //            'searchModel' => $searchModel,
 //            'dataProvider' => $dataProvider,            
