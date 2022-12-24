@@ -47,6 +47,7 @@ class AttributeCategorySearch extends AttributeCategory
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => false,
         ]);
 
         $this->load($params);
