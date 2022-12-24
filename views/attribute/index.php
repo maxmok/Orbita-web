@@ -13,13 +13,33 @@ use yii\grid\GridView;
 
 $this->title = 'Атрибуты';
 $this->params['breadcrumbs'][] = $this->title;
-
-$actions = '{view} ';
-$isAdmin = Yii::$app->user->identity->user->isAdmin;
 $btn_create = '';
+$isAdmin = Yii::$app->user->identity->user->isAdmin;
+
+$actions = $isAdmin ? [
+                'header' => 'Действия',
+                'class' => ActionColumn::className(),
+                'template' => '{update} {delete}',      
+                'urlCreator' => function ($action, Attribute $model, $key, $index, $column) {
+                    return Url::toRoute(['attribute/'.$action, 'id' => $model->id]);
+                 }       
+            ] : [];
+
+$widgetColumns = [
+            'id',
+            'attribute_name',
+            'short_name',
+            [
+                'attribute' => 'id_category',
+                'value' => 'attributeCategory.name',
+                'filter' => $categories,
+            ],            
+            'count_values',
+        ];
+
 if ($isAdmin)
 {
-    $actions .= '{update} {delete}';
+    $widgetColumns = array_merge($widgetColumns,[$actions]);   
     $btn_create = Html::a('Создать новый атрибут', ['attribute/create'], ['class' => 'btn btn-success']); 
 }
 
@@ -33,29 +53,11 @@ if ($isAdmin)
     </p>
     
     <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            //['class' => 'yii\grid\SerialColumn'],
-            'id',
-            'attribute_name',
-            'short_name',
-            [
-                'attribute' => 'id_category',
-                'value' => 'attributeCategory.name',
-                'filter' => $categories,
-            ],            
-            'count_values',
-            [
-                'header' => 'Действия',
-                'class' => ActionColumn::className(),
-                'template' => $actions,      
-                'urlCreator' => function ($action, Attribute $model, $key, $index, $column) {
-                    return Url::toRoute(['attribute/'.$action, 'id' => $model->id]);
-                 }       
-            ],
-        ],
-    ]); ?>
+            'dataProvider' => $dataProvider,
+            'filterModel' => $searchModel,
+            'columns' => $widgetColumns
+        ]); 
+?>
 
 
 </div>

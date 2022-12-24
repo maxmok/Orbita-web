@@ -45,7 +45,7 @@ class AttributeCategoryController extends Controller
                             'roles' => ['@'],
                         ],
                         [
-                            'actions' => ['view'],
+                            'actions' => ['view', 'index'],
                             'allow' => true,
                             'matchCallback' => function() use($user) {
                                 return !Yii::$app->user->isGuest;                                
@@ -164,10 +164,15 @@ class AttributeCategoryController extends Controller
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+    {        
+        $category = $this->findModel($id);
+        if (count(Attribute::getList($id)) == 0) {
+            $category->delete();
+            return $this->redirect(['index']);
+        } else {
+            throw new NotFoundHttpException("Нельзя удалить категорию '$category->name', т.к. она не пустая!" );
+        }
+            
     }
 
     /**

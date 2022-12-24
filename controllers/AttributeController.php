@@ -153,9 +153,14 @@ class AttributeController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        $attribute = $this->findModel($id);
+        
+        if ($attribute->count_values == 0) {
+            $attribute->delete();    
+            return $this->redirect(['index']);    
+        } else {
+            throw new NotFoundHttpException("Нельзя удалить атрибут '$attribute->attribute_name', т.к. у него есть $attribute->count_values значений!");
+        }
     }
 
     /**
